@@ -1,0 +1,9 @@
+<div *ngIf="componentIsActive">
+
+<label>
+    Network Address Block
+    <input #networkBlock type="text" value="172.22.0.0/16" />
+</label>
+<button (click) = "OnConfirmNetworkAddressBlock(networkBlock.value)" > Confirm Network Address Block</button>
+
+<div>

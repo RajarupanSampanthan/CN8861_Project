@@ -1,0 +1,146 @@
+<h1>
+    Configuration Panel
+</h1>
+
+<app-tabs #tabs [options]="options" (tabSelected)="OnSelectTab($event)" ></app-tabs>
+
+<form [formGroup]="configForm" >
+    
+        <!-- <label>
+            Network Address Block
+            <input #networkBlock type="text" value="172.22.22.0/24" />
+        </label>
+        <button (click) = "OnConfirmNetworkAddressBlock(networkBlock.value)" > Confirm Network Address Block</button> -->
+
+        <app-network-configuration
+        #networkConfigComponent
+        [componentIsActive]="isActive[0]"
+        (networkBlockUpdate)='OnConfirmNetworkAddressBlock($event)'
+        >
+        </app-network-configuration>
+
+
+    <app-link-configuration
+    #linkConfigComponent
+    [componentIsActive]="isActive[1]"
+    [selectedLinkId]="selectedLinkId"
+    [networkBlockIpAddress]="currentNetworkBlock"
+    [topology] = "topology"
+    >
+    </app-link-configuration>
+
+    <app-node-configuration
+    #nodeConfigComponent
+    [componentIsActive]="isActive[2]"
+    [selectedNodeId]="selectedNodeId"
+    [topology] = "topology"
+    >
+
+    </app-node-configuration>
+
+    <!-- <div formGroupName="linkConfigs">
+        <div *ngIf="isActive[1]">
+            <button (click) = "OnConfirmLinkConfigs()"  > Confirm Link Settings</button>
+            <div *ngFor="let _link of Links.controls; let i=index">
+                <div *ngIf="i == selectedLinkId">
+                    <div formGroupName="{{i}}">
+                        <h1>
+                            Configuring Link {{i}}
+                        </h1>
+                        <dl>
+                            <dt>
+                                <label>
+                                    Subnet
+                                    <input type="text" formControlName="subnet" value="" />
+                                </label>
+                            </dt>
+                            <dt>
+                                <label>
+                                    Link is Up
+                                    <input type="checkbox" formControlName="isActive" value="true" />
+                                </label>
+                            </dt>
+                            <dt>
+                                <label>
+                                    IP Address Increasing
+                                    <input type="checkbox" formControlName="ipIncrease" value="true" />
+                                    <p>Node : {{nodes[links[i].nodeAIndex].name}}, Port Name : {{nodes[links[i].nodeAIndex].portNames[links[i].portAIndex]}}</p>
+                                    <p>Node : {{nodes[links[i].nodeBIndex].name}}, Port Name : {{nodes[links[i].nodeBIndex].portNames[links[i].portBIndex]}} </p>
+                                </label>
+                            </dt>
+                            <dt>
+                                <label>
+                                    OSPF Area Number
+                                    <input type="number" formControlName="ospfArea" value="1" min="1"/>
+                                </label>
+                            </dt>
+                        </dl>
+                    </div>
+                </div>
+            </div>       
+        </div>
+    </div> -->
+
+
+
+
+    <!-- <div formGroupName="nodeConfigs">
+        <div *ngIf="isActive[2]">
+            <div *ngFor="let _node of Nodes.controls; let i=index">
+                <div *ngIf="i == selectedNodeId">
+                    <h1> Configuring Node {{nodes[i].name}}</h1>
+                    <div formGroupName="{{i}}">
+                        <dl>
+                            <dt>
+                                <label>
+                                    Node Name
+                                    <input type="text" formControlName="name" value="Router" />
+                                </label>
+                            </dt>
+                            <dt>
+                                <label>
+                                    Router ID
+                                    <input type="text" formControlName="routerId" value="" />
+                                </label>
+                            </dt>
+                            <dt>
+                                <label>
+                                    SSH IP Address
+                                    <input type="text" formControlName="ipAddress" value="" />
+                                </label>
+                            </dt>
+                            <dt>
+                                <label>
+                                    SSH Port
+                                    <input type="number" formControlName="port" value="22" min="22"/>
+                                </label>
+                            </dt>
+                            <dt>
+                                <label>
+                                    SSH Username
+                                    <input type="text" formControlName="username" value="U" />
+                                </label>
+                            </dt>
+                            <dt>
+                                <label>
+                                    SSH Password
+                                    <input type="text" formControlName="password" value="" />
+                                </label>
+                            </dt>
+                            <dt>
+                                <label>
+                                    SSH Secret
+                                    <input type="text" formControlName="secret" value="" />
+                                </label>
+                            </dt>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</form>
+<br>
+<button (click)="onSave()">Submit Configuration </button>
+
+

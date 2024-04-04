@@ -1,0 +1,5 @@
+<ul class="nav nav-tabs">
+    <div *ngFor="let tab, index as i  of options">
+      <h1 (click)="selectTab(i)"> {{tab}}</h1>
+    </div>
+</ul>

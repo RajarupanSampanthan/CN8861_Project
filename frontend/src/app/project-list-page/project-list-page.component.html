@@ -1,0 +1,6 @@
+<h1>Project List Page</h1>
+
+<div *ngFor="let project of projects">
+    <button class="primary" (click)="GoToProject(project.projectId)"  type="button">{{project.fileName}}</button>
+</div>
+

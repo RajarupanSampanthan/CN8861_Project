@@ -1,0 +1,8 @@
+<p>Login Page</p>
+<form [formGroup]="loginForm" >
+    <div style="display: flex; flex-direction: column">
+        <input type="text" [formControl]="loginForm.controls.username" placeholder="Username" />
+        <input type="text" [formControl]="loginForm.controls.password" placeholder="Password" />
+        <button class="primary" (click)="LoginToBackend()"  type="button">Login</button>
+    </div>
+</form>

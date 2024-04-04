@@ -1,0 +1,59 @@
+<div *ngIf="componentIsActive">
+
+<form [formGroup]="nodeConfigForm" >
+    <div formGroupName="nodes">
+        <div *ngFor="let _node of Nodes.controls; let i=index">
+            <div *ngIf="i == selectedNodeId">
+                <h1> Configuring Node {{i}}</h1> 
+                <div formGroupName="{{i}}">
+                    <dl>
+                        <dt>
+                            <label>
+                                Node Name
+                                <input type="text" formControlName="name" value="Router" />
+                            </label>
+                        </dt>
+                        <dt>
+                            <label>
+                                Router ID
+                                <input type="text" formControlName="routerId" value="" />
+                            </label>
+                        </dt>
+                        <dt>
+                            <label>
+                                SSH IP Address
+                                <input type="text" formControlName="ipAddress" value="" />
+                            </label>
+                        </dt>
+                        <dt>
+                            <label>
+                                SSH Port
+                                <input type="number" formControlName="port" value="22" min="22"/>
+                            </label>
+                        </dt>
+                        <dt>
+                            <label>
+                                SSH Username
+                                <input type="text" formControlName="username" value="U" />
+                            </label>
+                        </dt>
+                        <dt>
+                            <label>
+                                SSH Password
+                                <input type="text" formControlName="password" value="" />
+                            </label>
+                        </dt>
+                        <dt>
+                            <label>
+                                SSH Secret
+                                <input type="text" formControlName="secret" value="" />
+                            </label>
+                        </dt>
+                    </dl>
+                </div> 
+            </div>
+        </div>
+    </div>
+</form>
+
+</div>
