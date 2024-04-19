@@ -1,45 +1,57 @@
 <div *ngIf="componentIsActive">
-    <button (click) = "OnConfirmLinkConfigs(selectedSubnet.value, selectedOspfArea.value)"> Confirm Link Settings</button>
-    <h1>
-        Configuring Link {{selectedLinkId}}
-    </h1>
-    <dl>
-        <dt>
-            <label>
-                Subnet
-                <input type="text" value={{subnets[selectedLinkId]}} #selectedSubnet />
-            </label>
-        </dt>
-        <dt>
-            <label>
-                Toggle Link Status
-                <button (click)="OnToggleLinkState()"> Toggle Link </button>
-            </label>
-        </dt>
-        <dt>
-            <label>
-                Current Status
-                <p> Link is UP : {{linkStates[selectedLinkId]}} <p>
-            </label>
-        </dt>
-        <dt>
-            <label>
-                Switch Ip Addresses
-                <button (click)="OnSwitchPortIpAddresses()"> Switch IP Address </button>
-                <!-- <p>Node : {{nodes[links[selectedLinkId].nodeAIndex].name}}, Port Name : {{nodes[links[selectedLinkId].nodeAIndex].portNames[links[selectedLinkId].portAIndex]}} Ip Address : </p> -->
-                <!-- <p>Node : {{nodes[links[selectedLinkId].nodeBIndex].name}}, Port Name : {{nodes[links[selectedLinkId].nodeBIndex].portNames[links[selectedLinkId].portBIndex]}} Ip Address : </p> -->
-            </label>
-        </dt>
-        <dt>
-                <p> Node A IP Address : {{nodeAIpAddresses[selectedLinkId]}} <p>
-                <p> Node B IP Address : {{nodeBIpAddresses[selectedLinkId]}} </p>
-        </dt>
-        <dt>
-            <label>
-                OSPF Area Number
-                <input type="number"  value={{ospfArea[selectedLinkId]}} min="0" #selectedOspfArea/>
-            </label>
-        </dt>
-    </dl>
+  <button
+    (click)="OnConfirmLinkConfigs(selectedSubnet.value, selectedOspfArea.value)"
+  >
+    Confirm Link Settings
+  </button>
+  <h1>Configuring Link {{ selectedLinkId }}</h1>
+  <dl>
+    <dt>
+      <label>
+        Subnet
+        <input
+          type="text"
+          value="{{ subnets[selectedLinkId] }}"
+          #selectedSubnet
+        />
+      </label>
+    </dt>
+    <dt>
+      <label>
+        Toggle Link Status
+        <button (click)="OnToggleLinkState()">Toggle Link</button>
+      </label>
+    </dt>
+    <dt>
+      <label>
+        Current Status
+        <p>Link is UP : {{ linkStates[selectedLinkId] }}</p>
+        <p></p
+      ></label>
+    </dt>
+    <dt>
+      <label>
+        Switch Ip Addresses
+        <button (click)="OnSwitchPortIpAddresses()">Switch IP Address</button>
+        <!-- <p>Node : {{nodes[links[selectedLinkId].nodeAIndex].name}}, Port Name : {{nodes[links[selectedLinkId].nodeAIndex].adapterToPortNames[links[selectedLinkId].portAIndex]}} Ip Address : </p> -->
+        <!-- <p>Node : {{nodes[links[selectedLinkId].nodeBIndex].name}}, Port Name : {{nodes[links[selectedLinkId].nodeBIndex].adapterToPortNames[links[selectedLinkId].portBIndex]}} Ip Address : </p> -->
+      </label>
+    </dt>
+    <dt>
+      <p>Node A IP Address : {{ nodeAIpAddresses[selectedLinkId] }}</p>
+      <p></p>
+      <p>Node B IP Address : {{ nodeBIpAddresses[selectedLinkId] }}</p>
+    </dt>
+    <dt>
+      <label>
+        OSPF Area Number
+        <input
+          type="number"
+          value="{{ ospfArea[selectedLinkId] }}"
+          min="0"
+          #selectedOspfArea
+        />
+      </label>
+    </dt>
+  </dl>
 </div>
-

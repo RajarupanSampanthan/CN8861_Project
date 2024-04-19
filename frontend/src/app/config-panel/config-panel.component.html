@@ -1,44 +1,43 @@
-<h1>
-    Configuration Panel
-</h1>
+<h1>Configuration Panel</h1>
 
-<app-tabs #tabs [options]="options" (tabSelected)="OnSelectTab($event)" ></app-tabs>
+<app-tabs
+  #tabs
+  [options]="options"
+  (tabSelected)="OnSelectTab($event)"
+></app-tabs>
 
-<form [formGroup]="configForm" >
-    
-        <!-- <label>
+<form [formGroup]="configForm">
+  <!-- <label>
             Network Address Block
             <input #networkBlock type="text" value="172.22.22.0/24" />
         </label>
         <button (click) = "OnConfirmNetworkAddressBlock(networkBlock.value)" > Confirm Network Address Block</button> -->
 
-        <app-network-configuration
-        #networkConfigComponent
-        [componentIsActive]="isActive[0]"
-        (networkBlockUpdate)='OnConfirmNetworkAddressBlock($event)'
-        >
-        </app-network-configuration>
+  <app-network-configuration
+    #networkConfigComponent
+    [componentIsActive]="isActive[0]"
+    (networkBlockUpdate)="OnConfirmNetworkAddressBlock($event)"
+  >
+  </app-network-configuration>
 
-
-    <app-link-configuration
+  <app-link-configuration
     #linkConfigComponent
     [componentIsActive]="isActive[1]"
     [selectedLinkId]="selectedLinkId"
     [networkBlockIpAddress]="currentNetworkBlock"
-    [topology] = "topology"
-    >
-    </app-link-configuration>
+    [topology]="topology"
+  >
+  </app-link-configuration>
 
-    <app-node-configuration
+  <app-node-configuration
     #nodeConfigComponent
     [componentIsActive]="isActive[2]"
     [selectedNodeId]="selectedNodeId"
-    [topology] = "topology"
-    >
+    [topology]="topology"
+  >
+  </app-node-configuration>
 
-    </app-node-configuration>
-
-    <!-- <div formGroupName="linkConfigs">
+  <!-- <div formGroupName="linkConfigs">
         <div *ngIf="isActive[1]">
             <button (click) = "OnConfirmLinkConfigs()"  > Confirm Link Settings</button>
             <div *ngFor="let _link of Links.controls; let i=index">
@@ -64,8 +63,8 @@
                                 <label>
                                     IP Address Increasing
                                     <input type="checkbox" formControlName="ipIncrease" value="true" />
-                                    <p>Node : {{nodes[links[i].nodeAIndex].name}}, Port Name : {{nodes[links[i].nodeAIndex].portNames[links[i].portAIndex]}}</p>
-                                    <p>Node : {{nodes[links[i].nodeBIndex].name}}, Port Name : {{nodes[links[i].nodeBIndex].portNames[links[i].portBIndex]}} </p>
+                                    <p>Node : {{nodes[links[i].nodeAIndex].name}}, Port Name : {{nodes[links[i].nodeAIndex].adapterToPortNames[links[i].portAIndex]}}</p>
+                                    <p>Node : {{nodes[links[i].nodeBIndex].name}}, Port Name : {{nodes[links[i].nodeBIndex].adapterToPortNames[links[i].portBIndex]}} </p>
                                 </label>
                             </dt>
                             <dt>
@@ -81,10 +80,7 @@
         </div>
     </div> -->
 
-
-
-
-    <!-- <div formGroupName="nodeConfigs">
+  <!-- <div formGroupName="nodeConfigs">
         <div *ngIf="isActive[2]">
             <div *ngFor="let _node of Nodes.controls; let i=index">
                 <div *ngIf="i == selectedNodeId">
@@ -140,7 +136,5 @@
         </div>
     </div> -->
 </form>
-<br>
-<button (click)="onSave()">Submit Configuration </button>
-
-
+<br />
+<button (click)="onSave()">Submit Configuration</button>

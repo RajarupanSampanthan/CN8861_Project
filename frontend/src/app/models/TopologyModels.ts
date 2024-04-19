@@ -27,7 +27,7 @@ class NodeInfo {
 
     nodeId : string = ""
     name : string = ""
-    portNames : string[] = []
+    adapterToPortNames : Record<number, string[]> = {}
     position : Position = { x : 0, y : 0}
 }
 
@@ -39,7 +39,9 @@ class Position{
 
 class LinkInfo {
         nodeAIndex: number = 0
+        adapterAIndex : number = 0
         portAIndex : number = 0
         nodeBIndex: number = 0
+        adapterBIndex : number = 0
         portBIndex : number = 0
 }

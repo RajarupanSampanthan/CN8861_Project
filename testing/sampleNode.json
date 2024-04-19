@@ -1,0 +1,216 @@
+{
+  "command_line": "None",
+  "compute_id": "local",
+  "console": 5007,
+  "console_auto_start": "False",
+  "console_host": "localhost",
+  "console_type": "telnet",
+  "custom_adapters": [],
+  "first_port_name": "None",
+  "height": 45,
+  "label": {
+    "rotation": 0,
+    "style": "font-family: TypeWriter;font-size: 10.0;font-weight: bold;fill: #000000;fill-opacity: 1.0;",
+    "text": "R1",
+    "x": 19,
+    "y": -25
+  },
+  "locked": "False",
+  "name": "R1",
+  "node_directory": "/home/r/GNS3/projects/CN8861Test/project-files/dynamips/0a3d925d-777b-4022-9193-86202592a287",
+  "node_id": "0a3d925d-777b-4022-9193-86202592a287",
+  "node_type": "dynamips",
+  "port_name_format": "Ethernet{0}",
+  "port_segment_size": 0,
+  "ports": [
+    {
+      "adapter_number": 0,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet0/0",
+      "port_number": 0,
+      "short_name": "f0/0"
+    },
+    {
+      "adapter_number": 0,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet0/1",
+      "port_number": 1,
+      "short_name": "f0/1"
+    },
+    {
+      "adapter_number": 1,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet1/0",
+      "port_number": 0,
+      "short_name": "f1/0"
+    },
+    {
+      "adapter_number": 2,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet2/0",
+      "port_number": 0,
+      "short_name": "f2/0"
+    },
+    {
+      "adapter_number": 2,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet2/1",
+      "port_number": 1,
+      "short_name": "f2/1"
+    },
+    {
+      "adapter_number": 2,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet2/2",
+      "port_number": 2,
+      "short_name": "f2/2"
+    },
+    {
+      "adapter_number": 2,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet2/3",
+      "port_number": 3,
+      "short_name": "f2/3"
+    },
+    {
+      "adapter_number": 2,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet2/4",
+      "port_number": 4,
+      "short_name": "f2/4"
+    },
+    {
+      "adapter_number": 2,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet2/5",
+      "port_number": 5,
+      "short_name": "f2/5"
+    },
+    {
+      "adapter_number": 2,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet2/6",
+      "port_number": 6,
+      "short_name": "f2/6"
+    },
+    {
+      "adapter_number": 2,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet2/7",
+      "port_number": 7,
+      "short_name": "f2/7"
+    },
+    {
+      "adapter_number": 2,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet2/8",
+      "port_number": 8,
+      "short_name": "f2/8"
+    },
+    {
+      "adapter_number": 2,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet2/9",
+      "port_number": 9,
+      "short_name": "f2/9"
+    },
+    {
+      "adapter_number": 2,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet2/10",
+      "port_number": 10,
+      "short_name": "f2/10"
+    },
+    {
+      "adapter_number": 2,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet2/11",
+      "port_number": 11,
+      "short_name": "f2/11"
+    },
+    {
+      "adapter_number": 2,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet2/12",
+      "port_number": 12,
+      "short_name": "f2/12"
+    },
+    {
+      "adapter_number": 2,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet2/13",
+      "port_number": 13,
+      "short_name": "f2/13"
+    },
+    {
+      "adapter_number": 2,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet2/14",
+      "port_number": 14,
+      "short_name": "f2/14"
+    },
+    {
+      "adapter_number": 2,
+      "data_link_types": { "Ethernet": "DLT_EN10MB" },
+      "link_type": "ethernet",
+      "name": "FastEthernet2/15",
+      "port_number": 15,
+      "short_name": "f2/15"
+    }
+  ],
+  "project_id": "4f1259fe-c823-4eae-b8dc-df0d39da5d70",
+  "properties": {
+    "auto_delete_disks": "False",
+    "aux": "None",
+    "clock_divisor": 8,
+    "disk0": 0,
+    "disk1": 0,
+    "dynamips_id": 1,
+    "exec_area": 64,
+    "idlemax": 500,
+    "idlepc": "0x60c09aa0",
+    "idlesleep": 30,
+    "image": "c3725-adventerprisek9-mz.124-15.T14.image",
+    "image_md5sum": "64f8c427ed48fd21bd02cf1ff254c4eb",
+    "iomem": 5,
+    "mac_addr": "c201.1ba7.0000",
+    "mmap": "True",
+    "nvram": 256,
+    "platform": "c3725",
+    "ram": 128,
+    "slot0": "GT96100-FE",
+    "slot1": "NM-1FE-TX",
+    "slot2": "NM-16ESW",
+    "sparsemem": "True",
+    "system_id": "FTX0945W0MY",
+    "usage": "",
+    "wic0": "None",
+    "wic1": "None",
+    "wic2": "None"
+  },
+  "status": "started",
+  "symbol": ":/symbols/classic/router.svg",
+  "template_id": "35d8b683-2f21-47b0-9a81-f7280f832122",
+  "width": 66,
+  "x": -172,
+  "y": -25,
+  "z": 1
+}

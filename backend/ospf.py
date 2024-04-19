@@ -28,32 +28,44 @@ def setOspfConfiguration(topology, settings):
     print("Areas are contiguous")
     print(nodeToLinkIndices)
 
-    abrs = getABRS(nodeToLinkIndices, links, linkSettings, linksGroupedByArea)
+    canReachArea0, abrs = getABRS(
+        nodeToLinkIndices, links, linkSettings, linksGroupedByArea)
 
-    nodeSettings = settings["nodeConfigs"]
+    print(abrs)
 
-    ospfNodeConfigData = getNodeConfigArray(
-        nodes, links, linkSettings, nodeSettings, abrs)
-    connectionHandlers = getRouterConnectionHandlers(nodeSettings)
+    canConfigure = False
 
-    for nodeIndex, configData in enumerate(ospfNodeConfigData):
+    if canReachArea0:
+        canConfigure = True
+        nodeSettings = settings["nodeConfigs"]
 
-        print("Generating for node index ", nodeIndex)
-        commands = generatingCMlCommandsForNode(configData)
+        ospfNodeConfigData = getNodeConfigArray(
+            nodes, links, linkSettings, nodeSettings, abrs)
 
-        print(configData)
-        print("\n\n\nThis is config commands for node ", nodeIndex)
-        print("Commands are: ")
-        for line in commands:
-            print(line)
+        for nodeIndex, configData in enumerate(ospfNodeConfigData):
 
-        if connectionHandlers[nodeIndex] != None:
-            output = connectionHandlers[nodeIndex].send_config_set(commands)
+            print("Generating for node index ", nodeIndex)
+            commands = generatingCMlCommandsForNode(configData)
 
-        else:
-            print("COnnection Handler is zero")
+            print(configData)
+            print("\n\n\nThis is config commands for node ", nodeIndex)
+            print("Commands are: ")
 
-    return True, "This is a dummy message", "This is a dummy conf"
+            for line in commands:
+                print(line)
+
+            connectionHandler = getNodeConnectionHandler(
+                nodeSettings[nodeIndex])
+
+            if connectionHandler != None:
+                connectionHandler.enable()
+                output = connectionHandler.send_config_set(
+                    commands)
+
+            else:
+                print("COnnection Handler is zero")
+
+    return canConfigure, "This is a dummy message", "This is a dummy conf"
 
 
 def areasAreContiguous(linkSettings, linkToLinkGraph):
@@ -75,7 +87,7 @@ def areasAreContiguous(linkSettings, linkToLinkGraph):
                         linksSeen.add(linkToProcess)
                         linksInArea.append(linkToProcess)
                         for adjacentLink in linkToLinkGraph[linkToProcess]:
-                            if linkSettings[adjacentLink]["ospfArea"] == currentArea:
+                            if linkSettings[adjacentLink]["ospfArea"] == currentArea and linkSettings[adjacentLink]['isUp']:
                                 queue.append(adjacentLink)
 
                 contiguousAreas[currentArea] = linksInArea
@@ -93,7 +105,7 @@ def getNodeConfigArray(nodes, links, linkSettings, nodeSettings, abrs):
         nodeConfigData = getInitialNodeOSPFConfigData(
             nodeSettings[nodeIndex]["name"],
             nodeIndex + 1,
-            ni["portNames"]
+            ni["adapterToPortNames"]
         )
 
         nodeConfigArray.append(nodeConfigData)
@@ -101,11 +113,14 @@ def getNodeConfigArray(nodes, links, linkSettings, nodeSettings, abrs):
     for linkIndex, link in enumerate(links):
         for f in ["A", "B"]:
             nodeFieldName = "node" + f + "Index"
+            adapterFieldName = "adapter" + f + "Index"
             portFieldName = "port" + f + "Index"
             ipFieldName = "node" + f + "IpAddress"
             linkNodeIndex = link[nodeFieldName]
             linkPortIndex = link[portFieldName]
-            specificPort = nodeConfigArray[linkNodeIndex]["ports"][linkPortIndex]
+            linkAdapterIndex = link[adapterFieldName]
+
+            specificPort = nodeConfigArray[linkNodeIndex]["adapterToPorts"][linkAdapterIndex][linkPortIndex]
             specificPort["isUp"] = linkSettings[linkIndex]["isUp"]
             specificPort["ospfArea"] = linkSettings[linkIndex]["ospfArea"]
             specificPort["ipAddress"] = linkSettings[linkIndex][ipFieldName]
@@ -113,11 +128,9 @@ def getNodeConfigArray(nodes, links, linkSettings, nodeSettings, abrs):
     ABR_INDEX = 0
     TRANSIT_AREA_INDEX = 1
 
-    print("ABRS is ")
-    print(abrs)
-
     for area, bArray in abrs.items():
         transitArea = bArray[TRANSIT_AREA_INDEX]
+        print(area)
         if area != 0 and transitArea != 0:
             abrAIndex = bArray[ABR_INDEX]
             abrBIndex = abrs[transitArea][ABR_INDEX]
@@ -131,17 +144,29 @@ def getNodeConfigArray(nodes, links, linkSettings, nodeSettings, abrs):
     return nodeConfigArray
 
 
-def getInitialNodeOSPFConfigData(hostname, routerIdNum, ports):
-    portArray = []
-    for portName in ports:
-        portConfigData = getInitialPortConfigData()
-        portConfigData["portName"] = portName
-        portArray.append(portConfigData)
+def getInitialNodeOSPFConfigData(hostname, routerIdNum, adapterToPortsDict):
+    adapterDict = {}
+    for adapterIndex, adapter in adapterToPortsDict.items():
+        print("Processsing for adapter index " + str(adapterIndex))
+        portArray = []
+        for portName in adapter:
+            portConfigData = getInitialPortConfigData()
+            portConfigData["portName"] = portName
+            portArray.append(portConfigData)
+
+        print(portArray)
+        print("\n\n\n")
+        adapterDict[int(adapterIndex)] = portArray
+
+    print(adapterDict)
+    print("\n\n\n")
+
+    adapterDict[adapterIndex] = portArray
 
     return {
         "hostname":  hostname,
         "routerId": numToIpString(routerIdNum, 4),
-        "ports": portArray,
+        "adapterToPorts": adapterDict,
         "virtual": []
     }
 
@@ -173,20 +198,22 @@ def getABRS(nodeToLinkIndices, links, linkSettings, linksGroupedByArea):
 
     areaToNodes = getAreaToNodeIndices(links, linkSettings)
 
-    minDistances = getMinDistancesFromArea0(
+    canReachArea0, minDistances = getMinDistancesFromArea0(
         links, linkSettings, linksGroupedByArea, nodeToLinkIndices)
 
     abrs = {}
 
-    for area, nodeList in areaToNodes.items():
-        minNode = nodeList.pop()
-        for nodeIndex in nodeList:
-            if minDistances[nodeIndex][DISTANCE_INDEX] < minDistances[minNode][DISTANCE_INDEX]:
-                minNode = nodeIndex
+    if canReachArea0:
 
-        abrs[area] = [minNode, minDistances[minNode][AREA_CROSS_INDEX]]
+        for area, nodeList in areaToNodes.items():
+            minNode = nodeList.pop()
+            for nodeIndex in nodeList:
+                if minDistances[nodeIndex][DISTANCE_INDEX] < minDistances[minNode][DISTANCE_INDEX]:
+                    minNode = nodeIndex
 
-    return abrs
+            abrs[area] = [minNode, minDistances[minNode][AREA_CROSS_INDEX]]
+
+    return canReachArea0, abrs
 
 
 def getMinDistancesFromArea0(links, linkSettings, linksGroupedByArea, nodeToLinkIndices):
@@ -213,42 +240,49 @@ def getMinDistancesFromArea0(links, linkSettings, linksGroupedByArea, nodeToLink
 
             for linkIndex in nodeToLinkIndices[nodeIndex]:
                 linkSetting = linkSettings[linkIndex]
-                distance = values[DISTANCE_INDEX]
-                area_cross = values[AREA_CROSS_INDEX]
+                if linkSetting['isUp']:
+                    distance = values[DISTANCE_INDEX]
+                    area_cross = values[AREA_CROSS_INDEX]
 
-                if linkSetting["ospfArea"] != 0:
-                    distance += 1
+                    if linkSetting["ospfArea"] != 0:
+                        distance += 1
 
-                area_cross = linkSetting["ospfArea"]
-                other_node = getOtherNode(links[linkIndex], nodeIndex)
-                new_value = [distance, other_node, area_cross]
-                queue.put(new_value)
+                    area_cross = linkSetting["ospfArea"]
+                    other_node = getOtherNode(links[linkIndex], nodeIndex)
+                    new_value = [distance, other_node, area_cross]
+                    queue.put(new_value)
 
-    return minDistances
+    return None not in minDistances, minDistances
 
 
 def generatingCMlCommandsForNode(nodeConfigInfo):
 
-    commands = ["configure terminal", "hostname " + nodeConfigInfo["hostname"]]
+    commands = ["configure terminal",
+                "hostname " + nodeConfigInfo["hostname"]]
 
-    for port in nodeConfigInfo["ports"]:
-        if port["ipAddress"] != None:
-            commands.append("int " + port["portName"])
-            commands.append("shutdown")
-            if port["isUp"]:
+    for adapterIndex, adapter in nodeConfigInfo["adapterToPorts"].items():
+        print(adapter)
+        for port in adapter:
+            print("Printing port")
+            print(port)
+            if port["ipAddress"] != None:
+                commands.append("int " + port["portName"])
                 commands.append(
                     "ip address " + port["ipAddress"] + " 255.255.255.252")
-                commands.append("no shutdown")
+                commands.append("shutdown")
+                if port["isUp"]:
+                    commands.append("no shutdown")
 
     commands.append("exit")
     commands.append("no router ospf 1")
     commands.append("router ospf 1")
     commands.append("router-id " + nodeConfigInfo["routerId"])
 
-    for port in nodeConfigInfo["ports"]:
-        if port["ipAddress"] != None:
-            commands.append(
-                "network " + port["ipAddress"] + " 0.0.0.0 area " + str(port["ospfArea"]))
+    for adapterIndex, adapter in nodeConfigInfo["adapterToPorts"].items():
+        for port in adapter:
+            if port["ipAddress"] != None:
+                commands.append(
+                    "network " + port["ipAddress"] + " 0.0.0.0 area " + str(port["ospfArea"]))
 
     for abrValue in nodeConfigInfo["virtual"]:
         command = "area " + \

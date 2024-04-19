@@ -50,10 +50,12 @@ def getTopologyInfo(username, password, project_id):
         nodeIdToIndex = {}
         for nodeIndex, nodeData in enumerate(nodes_response.json()):
             print("Porcessing node with name ", nodeData["name"])
+            print(nodeData)
+            print("\n\n\n")
             node_info = {
                 "nodeId": nodeData["node_id"],
                 "name": nodeData["name"],
-                "portNames": [nd["short_name"] for nd in nodeData["ports"]],
+                "adapterToPortNames": getAdapaterPortArray(nodeData["ports"]),
                 "position": {
                     "x": nodeData["x"],
                     "y": nodeData["y"]
@@ -66,12 +68,17 @@ def getTopologyInfo(username, password, project_id):
 
         links = []
         for linkData in links_response.json():
+            print("Porcessing link")
+            print(linkData)
+            print("\n\n\n")
             nodeA = linkData["nodes"][0]
             nodeB = linkData["nodes"][1]
             link_info = {
                 "nodeAIndex": nodeIdToIndex[nodeA["node_id"]],
+                "adapterAIndex": nodeA["adapter_number"],
                 "portAIndex": nodeA["port_number"],
                 "nodeBIndex": nodeIdToIndex[nodeB["node_id"]],
+                "adapterBIndex": nodeB["adapter_number"],
                 "portBIndex": nodeB["port_number"],
             }
             links.append(link_info)
@@ -79,3 +86,20 @@ def getTopologyInfo(username, password, project_id):
         return_object["links"] = links
 
     return success, return_object
+
+
+def getAdapaterPortArray(portsSection):
+
+    adapterDict = {}
+
+    for port in portsSection:
+        adapterNum = port["adapter_number"]
+        shortName = port["short_name"]
+
+        if adapterNum not in adapterDict:
+            adapterDict[adapterNum] = [shortName]
+
+        else:
+            adapterDict[adapterNum].append(shortName)
+
+    return adapterDict
